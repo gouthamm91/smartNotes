@@ -5,21 +5,54 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Smart Notes</title>
 </head>
-<body>
+<body onload="retrieveFromCache()" style="text-align: center; background-image: url('https://images.pexels.com/photos/1629212/pexels-photo-1629212.jpeg?cs=srgb&dl=pexels-minan1398-1629212.jpg&fm=jpg'); background-size: cover;">
 
-<div id="inp" style="height: 400px; width: 700px; border: 1px solid white; overflow: auto;display: inline-block;" contenteditable></div>
-<div style="display: inline-block;">
-  <iframe id="out" style="height: 400px; width: 700px; border: 1px solid white; overflow: auto;" contenteditable></iframe>
+<h2 style="color: white; font-family: verdana;">Smart Notes</h2>
+
+<button onclick="inp.innerHTML = ''; storeInCache();">Clear Notes</button><br>
+
+<div id="inp" style="height: 550px; width: 700px; border: 1px solid gray; overflow: auto;display: inline-block; background-color: rgba(0, 0, 0, 0.5); padding: 3px; color: white; text-align: left; font-family: verdana;" onkeyup="storeInCache();" contenteditable></div>
+
+<div style="height: 550px; width: 700px; display: inline-block; background-color: rgba(0, 0, 0, 0.5);">
+  <iframe id="out" style="height: 100%; width: 100%; border: 1px solid gray; overflow: auto; padding: 3px;" contenteditable></iframe>
 </div>
 
 <div>
-<button onclick="toggleSpellcheck();changeButtonTxt(this)">Disable Spellcheck</button>
-<button onclick="replaceProperNounsWithLinks2();">Assist Me</button>
+<button onclick="toggleSpellcheck();changeButtonTxt(this);storeInCache();">Disable Spellcheck</button>
+<button onclick="replaceProperNounsWithLinks2();storeInCache();">Assist Me</button>
 <button id="mic">Start Speech Recognition</button>
-<button onclick="inp.innerHTML = '';">Clear Notes</button>
 </div>
 
 <script type="text/javascript">
+// Function to store inp.innerHTML in cache
+function storeInCache() {
+  const inpContent = document.getElementById('inp').innerHTML;
+
+  // Use localStorage to store the content (simple example, consider more robust storage methods)
+  localStorage.setItem('inpCache', inpContent);
+
+  console.log("Content stored in cache:", inpContent);
+}
+
+
+// Example of how to retrieve the cached content
+function retrieveFromCache() {
+    const cachedContent = localStorage.getItem('inpCache');
+    if (cachedContent) {
+        document.getElementById('inp').innerHTML = cachedContent;
+        console.log("Content retrieved from cache:", cachedContent);
+    } else {
+        console.log("No content found in cache.");
+    }
+}
+
+// Add event listeners or call these functions as needed.
+// For example, to store the content when the page unloads:
+// window.addEventListener('beforeunload', storeInCache);
+
+// Or, to retrieve the content when the page loads:
+// window.addEventListener('load', retrieveFromCache);
+
     function toggleSpellcheck() {
       const div = document.getElementById('inp');
       div.spellcheck = !div.spellcheck;
@@ -59,7 +92,7 @@
           const googleSearchUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(properNoun)}`;
           // const link = `<a href="${googleSearchUrl}" target="_blank">${properNoun}</a>`;
           // const link = `<button style="background-color: transparent; border: 0px; color: blue;" onclick="window.open('${googleSearchUrl}', target='_blank');">${properNoun}</button>`;
-          const link = `<a style="background-color: transparent; color: gray; border: 0px; padding: 0px; margin: 0px;" onclick="out.src = '${googleSearchUrl}';"><i><u>${properNoun}</u></i></a>_ `;
+          const link = `<a style="background-color: transparent; color: lightgreen; border: 0px; padding: 0px; margin: 0px;" onclick="out.src = '${googleSearchUrl}';"><i>${properNoun}</i></a>`;
           newText += link;
           lastIndex = properNounRegex.lastIndex;
         }
