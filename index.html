@@ -3,25 +3,34 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Smart Notes 0.5</title>
+    <title>Smart Notes 1.0</title>
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <style type="text/css">
+    button {
+        margin: 10px;
+        font-size: 150%;
+        background-color: rgba(225, 225, 100, 0.5);
+        color: #303030;
+        border: 1px solid gray;
+    }
+ </style>
+ 
 </head>
 <body onload="retrieveFromCache()" style="text-align: center; background-image: url('https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?cs=srgb&dl=pexels-goumbik-317356.jpg&fm=jpg'); background-size: cover;">
 
-<h2 style="color: #101010; font-family: verdana;"><i>Smart Notes</i></h2>
+<a style="color: #101010; font-family: verdana; font-size: 200%;"><i><b>Smart Notes</b></i></a>
 
-<button onclick="inp.innerHTML = ''; storeInCache();">Clear Notes</button><br>
+<button onclick="inp.innerHTML = ''; storeInCache(); out.src = '';">Clear Notes</button>
+<button onclick="toggleSpellcheck();changeButtonTxt(this);storeInCache();">Disable Spellcheck</button>
+<button onclick="replaceProperNounsWithLinks2();storeInCache();">Get References</button>
+<button id="mic">Start Speech Recognition</button>
 
-<div id="inp" style="height: 550px; width: 49%; border: 1px solid gray; overflow: auto;display: inline-block; background-color: rgba(200, 200, 200, 0.5); padding: 3px; color: #101010; text-align: left; font-family: verdana;" onkeyup="storeInCache();" contenteditable></div>
+<br>
+
+<div id="inp" style="height: 550px; width: 49%; border: 1px solid gray; overflow: auto;display: inline-block; background-color: rgba(200, 200, 200, 0.5); padding: 3px; color: #101010; text-align: left; font-family: verdana; font-size: 120%;" onkeyup="storeInCache();" contenteditable></div>
 
 <div style="height: 550px; width: 49%; display: inline-block; background-color: rgba(200, 200, 200, 0.5);">
   <iframe id="out" style="height: 100%; width: 100%; border: 1px solid gray; overflow: auto; padding: 3px;" contenteditable></iframe>
-</div>
-
-<div>
-<button onclick="toggleSpellcheck();changeButtonTxt(this);storeInCache();">Disable Spellcheck</button>
-<button onclick="replaceProperNounsWithLinks2();storeInCache();">Assist Me</button>
-<button id="mic">Start Speech Recognition</button>
 </div>
 
 <script type="text/javascript">
@@ -179,7 +188,7 @@ function retrieveFromCache() {
 
     // Add a button to start/stop speech recognition
     const startButton = document.getElementById('mic');
-    startButton.textContent = 'Start Speech Recognition';
+    // startButton.textContent = 'Start Speech Recognition';
     startButton.onclick = () => {
         if (recognition.isRunning) {
             recognition.stop();
@@ -190,7 +199,7 @@ function retrieveFromCache() {
         }
     };
 
-    document.body.appendChild(startButton);
+    // document.body.appendChild(startButton);
 </script>
 
 </body>
