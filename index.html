@@ -8,7 +8,7 @@
 </head>
 <body onload="retrieveFromCache()" style="text-align: center; background-image: url('https://images.pexels.com/photos/1629212/pexels-photo-1629212.jpeg?cs=srgb&dl=pexels-minan1398-1629212.jpg&fm=jpg'); background-size: cover;">
 
-<h2 style="color: white; font-family: verdana;"><i>Smart Notes</i></h2>
+<h2 style="color: white; font-family: verdana;"><i><u>Smart Notes</u></i></h2>
 
 <button onclick="inp.innerHTML = ''; storeInCache();">Clear Notes</button><br>
 
@@ -91,7 +91,7 @@ function retrieveFromCache() {
           newText += selectedText.substring(lastIndex, match.index);
           // const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(properNoun)}+wikipedia&btnI`;
           const googleSearchUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(properNoun)}`;
-	  const googleSearchUrl2 = `https://www.google.com/search?q=show+about+${encodeURIComponent(properNoun)}&btnI`;
+	        const googleSearchUrl2 = `https://www.google.com/search?q=show+about+${encodeURIComponent(properNoun)}+youtube&btnI`;
           // const link = `<a href="${googleSearchUrl}" target="_blank">${properNoun}</a>`;
           // const link = `<button style="background-color: transparent; border: 0px; color: blue;" onclick="window.open('${googleSearchUrl}', target='_blank');">${properNoun}</button>`;
           const link = `<a style="background-color: transparent; color: lightgreen; border: 0px; padding: 0px; margin: 0px;" ondblclick="window.open('${googleSearchUrl2}', target='_blank');" onclick="out.src = '${googleSearchUrl}';"><i>${properNoun}</i></a><a style="color: white;"></a>`;
