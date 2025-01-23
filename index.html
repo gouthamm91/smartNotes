@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Smart Notes 0.5</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Smart Notes 0.5</title>
  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 </head>
-<body onload="retrieveFromCache()" style="text-align: center; background-image: url('https://images.pexels.com/photos/1629212/pexels-photo-1629212.jpeg?cs=srgb&dl=pexels-minan1398-1629212.jpg&fm=jpg'); background-size: cover;">
+<body onload="retrieveFromCache()" style="text-align: center; background-image: url('https://images.pexels.com/photos/317356/pexels-photo-317356.jpeg?cs=srgb&dl=pexels-goumbik-317356.jpg&fm=jpg'); background-size: cover;">
 
-<h2 style="color: white; font-family: verdana;"><i>Smart Notes</i></h2>
+<h2 style="color: #101010; font-family: verdana;"><i>Smart Notes</i></h2>
 
 <button onclick="inp.innerHTML = ''; storeInCache();">Clear Notes</button><br>
 
-<div id="inp" style="height: 550px; width: 49%; border: 1px solid gray; overflow: auto;display: inline-block; background-color: rgba(0, 0, 0, 0.5); padding: 3px; color: white; text-align: left; font-family: verdana;" onkeyup="storeInCache();" contenteditable></div>
+<div id="inp" style="height: 550px; width: 49%; border: 1px solid gray; overflow: auto;display: inline-block; background-color: rgba(200, 200, 200, 0.5); padding: 3px; color: #101010; text-align: left; font-family: verdana;" onkeyup="storeInCache();" contenteditable></div>
 
-<div style="height: 550px; width: 49%; display: inline-block; background-color: rgba(0, 0, 0, 0.5);">
+<div style="height: 550px; width: 49%; display: inline-block; background-color: rgba(200, 200, 200, 0.5);">
   <iframe id="out" style="height: 100%; width: 100%; border: 1px solid gray; overflow: auto; padding: 3px;" contenteditable></iframe>
 </div>
 
@@ -91,10 +91,10 @@ function retrieveFromCache() {
           newText += selectedText.substring(lastIndex, match.index);
           // const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(properNoun)}+wikipedia&btnI`;
           const googleSearchUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(properNoun)}`;
-	        const googleSearchUrl2 = `https://www.google.com/search?q=show+artical+about+${encodeURIComponent(properNoun)}&btnI`;
+            const googleSearchUrl2 = `https://www.google.com/search?q=show+artical+about+${encodeURIComponent(properNoun)}&btnI`;
           // const link = `<a href="${googleSearchUrl}" target="_blank">${properNoun}</a>`;
           // const link = `<button style="background-color: transparent; border: 0px; color: blue;" onclick="window.open('${googleSearchUrl}', target='_blank');">${properNoun}</button>`;
-          const link = `<a style="background-color: transparent; color: lightgreen; border: 0px; padding: 0px; margin: 0px;" ondblclick="window.open('${googleSearchUrl2}', target='_blank');" onclick="out.src = '${googleSearchUrl}';"><i>${properNoun}</i></a><a style="color: white;"></a>`;
+          const link = `<a style="background-color: transparent; color: #1010DD; border: 0px; padding: 0px; margin: 0px;" ondblclick="window.open('${googleSearchUrl2}', target='_blank');" onclick="out.src = '${googleSearchUrl}';"><u>${properNoun}</u></a>`;
           newText += link;
           lastIndex = properNounRegex.lastIndex;
         }
@@ -183,10 +183,10 @@ function retrieveFromCache() {
     startButton.onclick = () => {
         if (recognition.isRunning) {
             recognition.stop();
-            startButton.textContent = 'Start Speech Recognition';
+            // startButton.textContent = 'Start Speech Recognition';
         } else {
             recognition.start();
-            startButton.textContent = 'Start Speech Recognition';
+            // startButton.textContent = 'Start Speech Recognition';
         }
     };
 
