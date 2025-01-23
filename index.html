@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Smart Notes</title>
+</head>
+<body>
+
+<div id="inp" style="height: 400px; width: 700px; border: 1px solid white; overflow: auto;display: inline-block;" contenteditable></div>
+<div style="display: inline-block;">
+  <iframe id="out" style="height: 400px; width: 700px; border: 1px solid white; overflow: auto;" contenteditable></iframe>
+</div>
+
+<div>
+<button onclick="toggleSpellcheck();changeButtonTxt(this)">Disable Spellcheck</button>
+<button onclick="replaceProperNounsWithLinks2();">Assist Me</button>
+<button id="mic">Start Speech Recognition</button>
+<button onclick="inp.innerHTML = '';">Clear Notes</button>
+</div>
+
+<script type="text/javascript">
+    function toggleSpellcheck() {
+      const div = document.getElementById('inp');
+      div.spellcheck = !div.spellcheck;
+      console.log(`Spellcheck is now ${div.spellcheck ? 'enabled' : 'disabled'}`);
+    }
+    function changeButtonTxt(btn) {
+      btn.innerText = btn.innerText === 'Enable Spellcheck' ? 'Disable Spellcheck' : 'Enable Spellcheck';
+    }
+
+    var exceptionText = ["I", "Me", "My", "Mine", "You", "Your", "Yours", "He", "Him", "His", "She", "Her", "Hers", "It", "Its", "We", "Us", "Our", "Ours", "They", "Them", "Their", "Theirs", "On", "In", "At", "To", "From", "By", "With", "About", "For", "Of", "Is", "Am", "Are", "Was", "Were", "Be", "Being", "Been", "Have", "Has", "Had", "Do", "Does", "Did", "Will", "Would", "Shall", "Should", "May", "Might", "Can", "Could", "Must", "Ought", "A", "An", "The", "This", "That", "These", "Those", "My", "Your", "His", "Her", "Its", "Our", "Their", "Some", "Any", "Many", "Much", "Few", "Little", "All", "Both", "Each", "Every", "Either", "Neither", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Who", "How", "When", "Where", "Why", "What"];
+
+
+    function replaceProperNounsWithLinks2() {
+      const div = document.getElementById('inp');
+      const selection = window.getSelection();
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        const selectedText = range.toString();
+
+        const properNounRegex = /([A-Z][a-z]+|[A-Z]+|[A-Z]+[a-z]+[A-Z]+)+(\s+[A-Z][a-z]+|\s+[A-Z]+|\s+[A-Z]+[a-z]+[A-Z]+)*/g;
+        let newText = '';
+        let lastIndex = 0;
+        let match;
+
+        while ((match = properNounRegex.exec(selectedText)) !== null) {
+          const properNoun = match[0];
+
+          if (exceptionText.includes(properNoun)) {
+            newText += selectedText.substring(lastIndex, match.index);
+            newText += properNoun;
+            lastIndex = properNounRegex.lastIndex;
+            continue;
+          }
+
+          newText += selectedText.substring(lastIndex, match.index);
+          // const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(properNoun)}+wikipedia&btnI`;
+          const googleSearchUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(properNoun)}`;
+          // const link = `<a href="${googleSearchUrl}" target="_blank">${properNoun}</a>`;
+          // const link = `<button style="background-color: transparent; border: 0px; color: blue;" onclick="window.open('${googleSearchUrl}', target='_blank');">${properNoun}</button>`;
+          const link = `<a style="background-color: transparent; color: gray; border: 0px; padding: 0px; margin: 0px;" onclick="out.src = '${googleSearchUrl}';"><i><u>${properNoun}</u></i></a>_ `;
+          newText += link;
+          lastIndex = properNounRegex.lastIndex;
+        }
+        newText += selectedText.substring(lastIndex);
+
+        // Replace the selected text with the modified text
+        range.deleteContents();
+        const newFragment = document.createRange().createContextualFragment(newText);
+        range.insertNode(newFragment);
+      }
+    }
+
+    function replaceProperNounsWithLinks() {
+      const div = document.getElementById('inp');
+      const text = div.textContent.split('\r\n').join('<br>');
+      // const text = div.innerHTML;
+      const words = text.split(/\s+/); // Split by whitespace
+
+      // const properNounRegex = /[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*/g; // Matches capitalized words
+      // const properNounRegex = /\b([A-Z][a-z]+|[A-Z]+|[A-Z]+[a-z]+[A-Z]+)\b/g; // Matches capitalized words
+      const properNounRegex = /([A-Z][a-z]+|[A-Z]+|[A-Z]+[a-z]+[A-Z]+)+(\s+[A-Z][a-z]+|\s+[A-Z]+|\s+[A-Z]+[a-z]+[A-Z]+)*/g; // Matches capitalized words
+
+      // let newText = text;
+      let newText = '';
+      let lastIndex = 0;
+      let match;
+
+      while ((match = properNounRegex.exec(text)) !== null) {
+        const properNoun = match[0];
+
+        if (exceptionText.includes(properNoun)) {
+          newText += text.substring(lastIndex, match.index);
+          newText += properNoun;
+          lastIndex = properNounRegex.lastIndex;
+          continue;
+        }
+
+        // // Append text before the match
+        newText += text.substring(lastIndex, match.index);
+//
+        // // Create a link for the proper noun
+        const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(properNoun)}+wikipedia&btnI`;
+        const link = `<a href="${googleSearchUrl}" target="_blank">${properNoun}</a>`;
+        newText += link;
+//
+        lastIndex = properNounRegex.lastIndex;
+        // newText = newText.split(properNoun).join(link);
+      }
+
+      // Append any remaining text
+      newText += text.substring(lastIndex);
+      div.innerHTML = newText;
+    }
+
+    // document.addEventListener('DOMContentLoaded', function() {
+    //   replaceProperNounsWithLinks();
+    // });
+
+
+    // Speech Recognition
+    const recognition = new webkitSpeechRecognition() || new SpeechRecognition(); // Use webkitSpeechRecognition for better browser compatibility
+    recognition.continuous = true; // Enable continuous recognition
+    recognition.interimResults = true; // Provide interim results
+
+    let currentText = ''; // Variable to store the current text
+
+    recognition.onresult = (event) => {
+        let interimTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+                currentText += event.results[i][0].transcript;
+            } else {
+                interimTranscript += event.results[i][0].transcript;
+            }
+        }
+        document.getElementById('inp').textContent = currentText + interimTranscript;
+    };
+
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
+    };
+
+    // Add a button to start/stop speech recognition
+    const startButton = document.getElementById('mic');
+    startButton.textContent = 'Start Speech Recognition';
+    startButton.onclick = () => {
+        if (recognition.isRunning) {
+            recognition.stop();
+            startButton.textContent = 'Start Speech Recognition';
+        } else {
+            recognition.start();
+            startButton.textContent = 'Start Speech Recognition';
+        }
+    };
+
+    document.body.appendChild(startButton);
+</script>
+
+</body>
+</html>
